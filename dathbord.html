@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="Projeto Pet em Risco - Adoção e proteção animal" />
+    <meta name="author" content="Pet em Risco" />
+    <title>Pet em Risco - Painel</title>
+
+    <link rel="icon" type="image/x-icon" href="assets/img/logoDark-PNG.png" media="(prefers-color-scheme: light)">
+    <link rel="icon" type="image/x-icon" href="assets/img/logoLight-PNG.png" media="(prefers-color-scheme: dark)">
+
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" />
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+    <link rel="stylesheet" href="./css/style.css">
+    <style>
+          /* Sidebar */
+      .sidebar {
+        background: linear-gradient(180deg, #7B3812, #361603); /* Gradiente mais escuro */
+        min-height: 100vh;
+        color: rgb(255, 255, 255);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 1rem;
+        position: sticky;
+        top: 0;
+        transition: all 0.3s ease; /* Adiciona transição para a responsividade */
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .sidebar .logo {
+        width: 60px;
+        margin-bottom: 2rem;
+        filter: drop-shadow(0 0 5px rgba(243, 0, 0, 0.3));
+      }
+
+      .sidebar .nav {
+        list-style: none;
+        padding: 0;
+        width: 100%; /* Garante que a nav ocupe a largura total do sidebar */
+      }
+
+      .sidebar .nav-item {
+        margin: 0.5rem 0; /* Ajusta margem dos itens */
+      }
+
+      .sidebar .nav-item a {
+        color: #e9ecef; /* Cor mais clara para os links */
+        text-decoration: none;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        padding: 0.75rem 1rem; /* Adiciona padding para área de clique */
+        gap: 10px;
+        transition: all 0.2s ease;
+      }
+
+      .sidebar .nav-item a:hover {
+        color: #EFC8AF; /* Amarelo Bootstrap para hover */
+        background-color: #612D0F; /* Fundo sutil ao passar o mouse */
+        border-radius: 5px;
+        transform: translateX(5px); /* Efeito sutil no hover */
+      }
+
+      .sidebar .nav-item a i {
+        font-size: 1.5rem; /* Tamanho dos ícones */
+        width: 30px; /* Garante alinhamento dos ícones */
+        text-align: center;
+      }
+
+      .sidebar .nav-item a span {
+        display: none; /* Esconde o texto por padrão em telas pequenas */
+      }
+
+      /* Estilos para telas grandes (>= 992px) */
+      @media (min-width: 992px) {
+        .sidebar {
+          width: 250px; /* Largura expandida para desktop */
+          align-items: flex-start; /* Alinha itens à esquerda */
+          padding-left: 1.5rem; /* Mais padding à esquerda */
+        }
+        .sidebar .logo {
+          align-self: center; /* Centraliza o logo */
+          margin-bottom: 3rem;
+        }
+        .sidebar .nav-item a span {
+          display: inline; /* Mostra o texto em desktop */
+        }
+        .sidebar .nav-item a {
+          justify-content: flex-start; /* Alinha texto e ícone à esquerda */
+        }
+        .sidebar .nav-item a i {
+            margin-right: 10px; /* Espaçamento entre ícone e texto */
+        }
+      }
+
+      /* Estilos para telas pequenas (<= 991.98px) */
+      @media (max-width: 991.98px) {
+        .sidebar {
+          min-height: auto; /* Altura automática */
+          width: 100%;
+          padding: 0.5rem 0;
+          flex-direction: row; /* Itens em linha */
+          justify-content: space-around; /* Espaçamento igual entre itens */
+          position: relative; /* Remove sticky para mobile */
+          box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .sidebar .logo {
+          display: none; /* Oculta o logo em mobile */
+        }
+        .sidebar .nav {
+          flex-direction: row; /* Itens de navegação em linha */
+          justify-content: space-around;
+        }
+        .sidebar .nav-item {
+          margin: 0;
+        }
+        .sidebar .nav-item a {
+          padding: 0.5rem;
+          justify-content: center; /* Centraliza o ícone */
+        }
+        .sidebar .nav-item a:hover {
+            transform: none; /* Remove transformação no hover para mobile */
+        }
+      }
+
+
+      /* Conteúdo principal */
+      .main-content {
+        background-color: #fff;
+        border-radius: 0.75rem; /* Bordas um pouco menos arredondadas */
+        margin: 1.5rem;
+        padding: 2.5rem; /* Mais padding interno */
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* Sombra mais suave */
+      }
+
+      .main-content h2 {
+        color: #343a40; /* Cor mais escura para o título */
+        margin-bottom: 1rem;
+      }
+
+      .main-content .alert {
+        border-left: 5px solid; /* Borda esquerda colorida para alertas */
+        border-radius: 0.5rem;
+      }
+
+      /* Cards de Resumo */
+      .card-metric .card-body {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+      }
+      .card-metric .icon-wrapper {
+          font-size: 2.5rem;
+          opacity: 0.6;
+      }
+      .card-metric .text-xs {
+          font-size: 0.75rem;
+          margin-bottom: 0.25rem;
+      }
+      .card-metric .h5 {
+          font-size: 1.75rem;
+      }
+
+      /* Ajuste para o Card do Gráfico */
+      .card-chart {
+        height: 400px; /* Altura fixa para o gráfico */
+        max-width: 100%;
+      }
+      
+      .card-chart canvas {
+        width: 100% !important;
+        height: 100% !important;
+      }
+      
+      .border-primary { border-color: #007bff !important; }
+      .border-success { border-color: #28a745 !important; }
+      .border-warning { border-color: #ffc107 !important; }
+      .border-danger { border-color: #dc3545 !important; }
+
+    </style>
+  </head>
+
+  <body>
+    <div class="container-fluid p-0">
+      
+      <div class="row g-0">
+        <div class="col-auto sidebar">
+          <a href="#" class="text-center"><img src="./assets/img/Group 1.png" alt="Logo pet em risco" class="logo d-none d-lg-block"></a> <ul class="nav flex-lg-column">
+            <li class="nav-item">
+                <a href="#" class="d-flex align-items-center" data-bs-toggle="tooltip" data-bs-placement="right" title="Início">
+                    <i class="bi bi-house-door-fill"></i>
+                    <span class="d-none d-lg-inline">Início</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="d-flex align-items-center" data-bs-toggle="tooltip" data-bs-placement="right" title="Notificações">
+                    <i class="bi bi-bell-fill"></i>
+                    <span class="d-none d-lg-inline">Notificações</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="d-flex align-items-center" data-bs-toggle="tooltip" data-bs-placement="right" title="Adoções">
+                    <i class="bi bi-heart-fill"></i>
+                    <span class="d-none d-lg-inline">Adoções</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="d-flex align-items-center" data-bs-toggle="tooltip" data-bs-placement="right" title="Denúncias">
+                    <i class="bi bi-exclamation-triangle-fill"></i>
+                    <span class="d-none d-lg-inline">Denúncias</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="d-flex align-items-center" data-bs-toggle="tooltip" data-bs-placement="right" title="Meu Perfil">
+                    <i class="bi bi-person-fill"></i>
+                    <span class="d-none d-lg-inline">Meu Perfil</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="d-flex align-items-center" data-bs-toggle="tooltip" data-bs-placement="right" title="Configurações">
+                    <i class="bi bi-gear-fill"></i>
+                    <span class="d-none d-lg-inline">Configurações</span>
+                </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="col-lg-grow-1 col-md-12"> <div class="main-content">
+            <h2 class="fw-bold text-secondary mb-4">Painel - Pet em Risco</h2>
+            <p class="text-muted mb-4">
+              Bem-vindo(a) ao sistema <strong>Pet em Risco</strong>. Aqui você pode gerenciar denúncias, adoções, perfis e muito mais.
+            </p>
+
+            <div class="row mb-5">
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-start border-5 border-danger shadow h-100 py-2 card-metric">
+                        <div class="card-body">
+                            <div class="col me-2">
+                                <div class="text-xs fw-bold text-danger text-uppercase mb-1">
+                                    Denúncias Pendentes
+                                </div>
+                                <div class="h5 mb-0 fw-bold text-gray-800">18</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="bi bi-exclamation-triangle-fill text-danger icon-wrapper"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-start border-5 border-primary shadow h-100 py-2 card-metric">
+                        <div class="card-body">
+                            <div class="col me-2">
+                                <div class="text-xs fw-bold text-primary text-uppercase mb-1">
+                                    Adoções (Este Mês)
+                                </div>
+                                <div class="h5 mb-0 fw-bold text-gray-800">4</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="bi bi-heart-fill text-primary icon-wrapper"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-start border-5 border-success shadow h-100 py-2 card-metric">
+                        <div class="card-body">
+                            <div class="col me-2">
+                                <div class="text-xs fw-bold text-success text-uppercase mb-1">
+                                    Pets Cadastrados
+                                </div>
+                                <div class="h5 mb-0 fw-bold text-gray-800">125</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="bi bi-paw-fill text-success icon-wrapper"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-start border-5 border-warning shadow h-100 py-2 card-metric">
+                        <div class="card-body">
+                            <div class="col me-2">
+                                <div class="text-xs fw-bold text-warning text-uppercase mb-1">
+                                    Usuários Ativos
+                                </div>
+                                <div class="h5 mb-0 fw-bold text-gray-800">50</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="bi bi-people-fill text-warning icon-wrapper"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alert alert-warning mt-2 mb-5">
+              <i class="bi bi-info-circle-fill me-2"></i> Nenhuma notificação urgente no momento.
+            </div>
+
+            <h3 class="fw-bold text-secondary mb-3 mt-4">Atividades Recentes</h3>
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 bg-light d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 fw-bold text-primary">Últimas 5 Denúncias Cadastradas</h6>
+                    <button class="btn btn-sm btn-outline-secondary">Ver Todas</button>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-borderless" id="dataTable" width="100%" cellspacing="0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Tipo</th>
+                                    <th>Status</th>
+                                    <th>Data</th>
+                                    <th>Local</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>#001</td>
+                                    <td>Maus Tratos</td>
+                                    <td><span class="badge bg-danger">Pendente</span></td>
+                                    <td>01/11/2025</td>
+                                    <td>Rua A, 123 - Centro</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-info text-white"><i class="bi bi-eye"></i></button>
+                                        <button class="btn btn-sm btn-success"><i class="bi bi-check-circle"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#002</td>
+                                    <td>Abandono</td>
+                                    <td><span class="badge bg-warning text-dark">Em Análise</span></td>
+                                    <td>30/10/2025</td>
+                                    <td>Parque Municipal</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-info text-white"><i class="bi bi-eye"></i></button>
+                                        <button class="btn btn-sm btn-success"><i class="bi bi-check-circle"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#003</td>
+                                    <td>Maus Tratos</td>
+                                    <td><span class="badge bg-danger">Pendente</span></td>
+                                    <td>28/10/2025</td>
+                                    <td>Av. Principal, 456</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-info text-white"><i class="bi bi-eye"></i></button>
+                                        <button class="btn btn-sm btn-success"><i class="bi bi-check-circle"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#004</td>
+                                    <td>Negligência</td>
+                                    <td><span class="badge bg-success">Resolvida</span></td>
+                                    <td>25/10/2025</td>
+                                    <td>Praça da Matriz</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-info text-white"><i class="bi bi-eye"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#005</td>
+                                    <td>Abandono</td>
+                                    <td><span class="badge bg-warning text-dark">Em Análise</span></td>
+                                    <td>22/10/2025</td>
+                                    <td>Rua B, 789 - Bairro Novo</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-info text-white"><i class="bi bi-eye"></i></button>
+                                        <button class="btn btn-sm btn-success"><i class="bi bi-check-circle"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+              </div>
+              
+              <div class="card shadow mb-4 card-chart"> <div class="card-header py-3 bg-light">
+                    <h6 class="m-0 fw-bold text-primary">Gráfico de Denúncias por Localidade</h6>
+                </div>
+                <div class="card-body">
+                  <div style="height: 100%;"> <canvas id="myChart"></canvas>
+                  </div>
+                </div>
+          </div>
+        </div>
+      </div>
+
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        // Inicializa os tooltips do Bootstrap
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+          return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+
+        // Script para ajustar a largura da coluna principal
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebar = document.querySelector('.sidebar');
+            const mainContentCol = document.querySelector('.col-lg-grow-1');
+
+            function adjustMainContentWidth() {
+                if (window.innerWidth >= 992) { // Largura desktop
+                    // Calcula o espaço restante
+                    mainContentCol.style.width = `calc(100% - ${sidebar.offsetWidth}px)`;
+                } else { // Largura mobile
+                    mainContentCol.style.width = '100%';
+                }
+            }
+
+            // Chama ao carregar e ao redimensionar
+            adjustMainContentWidth();
+            window.addEventListener('resize', adjustMainContentWidth);
+        });
+
+
+        // Configuração do Chart.js
+        const ctx = document.getElementById('myChart');
+
+        new Chart(ctx, {
+          type: 'bar', // Tipo de gráfico de barras
+          data: {
+            labels: ['Centro', 'Bairro Novo', 'Parque', 'Industrial', 'Residencial Sul', 'Total'], // Nomes dos bairros/locais
+            datasets: [{
+              label: 'Denúncias Recebidas',
+              data: [12, 19, 7, 5, 10, 53], // Dados das denúncias
+              backgroundColor: [ // Cores das barras (pode ser um array de cores)
+                  'rgba(255, 99, 132, 0.7)', // Vermelho
+                  'rgba(54, 162, 235, 0.7)', // Azul
+                  'rgba(255, 206, 86, 0.7)', // Amarelo
+                  'rgba(75, 192, 192, 0.7)', // Verde
+                  'rgba(153, 102, 255, 0.7)', // Roxo
+                  'rgba(201, 203, 207, 0.7)' // Cinza
+              ],
+              borderColor: [
+                  'rgba(255, 99, 132, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)',
+                  'rgba(153, 102, 255, 1)',
+                  'rgba(201, 203, 207, 1)'
+              ],
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false, // Permite que o gráfico use o espaço definido pelo CSS
+            scales: {
+              y: {
+                beginAtZero: true,
+                title: {
+                    display: true,
+                    text: 'Número de Denúncias'
+                }
+              },
+              x: {
+                title: {
+                    display: true,
+                    text: 'Localidade'
+                }
+              }
+            }
+          }
+        });
+    </script>
+  </body>
+</html>
